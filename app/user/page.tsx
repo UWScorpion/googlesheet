@@ -117,13 +117,14 @@ const User = ({rowNumber}: UserProps) => {
           <input
             type="text"
             value={rowNum}
-            className="w-10 ml-4 mr-4 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+            className="w-10 ml-4 mr-4 appearance-none border-2 border-gray-200 rounded py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             onChange={(e) => handleNav(0, Number(e.target.value))}
           />
           <SlArrowRight onClick={() => handleNav(1)} />
           <div className="ml-4 font-semibold flex flex-row text-orange-500">
-            <div className="ml-4">
+            <div className="ml-4 flex flex-col">
               <div>Use Case</div>
+              <div className="text-black">{getColumnWithName("Use Case")}</div>
             </div>
             <div className="ml-4 flex flex-col">
               <div>Industry</div>

@@ -2,24 +2,27 @@
 
 import { ChangeEvent, useEffect, useState } from "react";
 import { Column } from "../common/constants";
+import CommentModal from "./CommentModal";
 interface QuestionProps {
   column: Column;
   rowNumber: number;
 }
 
-const Question = ({ column , rowNumber}: QuestionProps) => {
+const Question = ({ column, rowNumber }: QuestionProps) => {
   const [value, setValue] = useState(column.text);
-  useEffect(()=>{
+  useEffect(() => {
     setValue(column.text);
   }, [column.text]);
 
-  const handleTextChange = async (e: ChangeEvent<HTMLTextAreaElement>)=>{
+  const handleTextChange = async (e: ChangeEvent<HTMLTextAreaElement>) => {
     console.log(column.columnNum! + rowNumber);
     setValue(e.target.value);
-    if (!column.columnNum){
+    if (!column.columnNum) {
       return;
     }
-    const req = new Request(`/api/googlesheet?range=${column.columnNum! + rowNumber}`);
+    const req = new Request(
+      `/api/googlesheet?range=${column.columnNum! + rowNumber}`
+    );
     const response = await fetch(req, {
       method: "PUT",
       headers: {
@@ -30,7 +33,7 @@ const Question = ({ column , rowNumber}: QuestionProps) => {
     });
 
     return response;
-  }
+  };
 
   return (
     <div>
@@ -41,13 +44,17 @@ const Question = ({ column , rowNumber}: QuestionProps) => {
         {column.title}
       </label>
       <div className="flex flex-row">
-      <textarea
-        value={value}
-        onChange={(e)=>handleTextChange(e)}
-        className="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-        name={column.title}
-        id={column.id}
-      />
+        <textarea
+          value={value}
+          onChange={(e) => handleTextChange(e)}
+          className="appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+          name={column.title}
+          id={column.id}
+        />
+
+        <div className="ml-4 cursor-pointer">
+          <CommentModal/>
+        </div>
       </div>
     </div>
   );

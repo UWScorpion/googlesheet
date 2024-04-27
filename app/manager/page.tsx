@@ -37,12 +37,12 @@ const Manager = () => {
     fetchData();
   }, []);
 
-  const handleClick =(row: number, col: number)=>{
-    if (row !== 0){
+  const handleClick = (row: number, col: number) => {
+    if (row !== 0) {
       return;
     }
     setRowNum(2 + col - 1);
-  }
+  };
 
   const getColumns = () => {
     const hideColumns = ["Use Case"];
@@ -56,9 +56,15 @@ const Manager = () => {
       <table className="border-separate border-spacing-4 border mt-4 ml-4">
         <tbody>
           {getColumns().map((row: ManagerColumn, i) => (
-            <tr key={i} className={`${i === 0  ? "cursor-pointer" : ""}`}>
+            <tr key={i} className={`${i === 0 ? "cursor-pointer" : ""}`}>
               {row.texts?.map((col: string, j) => (
-                <td key={j} className={`${j === 0 ? "font-semibold cursor-auto" : ""}`} onClick={()=>handleClick(i, j)}>
+                <td
+                  key={j}
+                  className={`text-center ${j === 0 ? "font-semibold cursor-auto" : ""} ${
+                    j !== 0 && i === 0 ? "hover:bg-gray-200" : ""
+                  }`}
+                  onClick={() => handleClick(i, j)}
+                >
                   {col}
                 </td>
               ))}
@@ -68,7 +74,7 @@ const Manager = () => {
       </table>
       <div className="mt-20 font-bold ml-4 text-xl">USER VIEW</div>
       <div className="border">
-        <User rowNumber = {rowNum}/>
+        <User rowNumber={rowNum} />
       </div>
     </div>
   );
