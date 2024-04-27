@@ -1,14 +1,37 @@
 "use client";
-import React from "react";
+
+import { ChangeEvent, useEffect, useState } from "react";
 import { Column } from "../common/constants";
-import { useState } from "react";
 interface Props {
   column: Column;
+  rowNumber: number;
 }
 
-const Question = ({ column }: Props) => {
-  const handleTextChange =()=>{
+const Question = ({ column , rowNumber}: Props) => {
+  const [value, setValue] = useState(column.text);
+  useEffect(()=>{
+    setValue(column.text);
+  }, [column.text]);
+
+  const handleTextChange = async (e: ChangeEvent<HTMLTextAreaElement>)=>{
+    console.log(column.columnNum! + rowNumber);
+    setValue(e.target.value);
+    if (!column.columnNum){
+      return;
+    }
+    const req = new Request(`/api/googlesheet?range=${column.columnNum! + rowNumber}`);
+    const response = await fetch(req, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(e.target.value),
+    });
+
+    return response;
   }
+
   return (
     <div>
       <label
@@ -19,8 +42,8 @@ const Question = ({ column }: Props) => {
       </label>
       <div className="flex flex-row">
       <textarea
-        value={column.text}
-        onChange={handleTextChange}
+        value={value}
+        onChange={(e)=>handleTextChange(e)}
         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
         name={column.title}
         id={column.id}

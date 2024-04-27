@@ -11,8 +11,14 @@ export interface Column {
     type?: QuestionType,
     title?: string,
     text?: string,
+    columnNum?: string,
     disabled?: boolean,
     comments?: Comment[],
+}
+
+export interface ManagerColumn {
+    title?: string,
+    texts?: string[],
 }
 
 export interface Comment {

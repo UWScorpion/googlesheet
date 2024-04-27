@@ -1,4 +1,3 @@
-import { PromptData } from "@/app/common/constants";
 import { google } from "googleapis";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -57,7 +56,7 @@ export async function PUT(request: NextRequest) {
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [
-          [body.seedPrompt, body.seedPromptInstructions, body.seedPromptAnalysis],
+          [body],
         ],
       },
     });
