@@ -7,7 +7,6 @@ import { SlArrowLeft } from "react-icons/sl";
 import { SlArrowRight } from "react-icons/sl";
 const User = () => {
   const [columns, setColumns] = useState([] as Column[]);
-  const [promptId, setPromptId] = useState("");
   const [rowNum, setRowNum] = useState(2);
   useEffect(() => {
     const fetchData = async () => {
@@ -25,8 +24,7 @@ const User = () => {
           for (let i = 0; i < res.data.values[1].length; i++) {
             cols[i].text = res.data.values[1][i];
           }
-          setPromptId(cols[0].text);
-          setColumns(cols.slice(1));
+          setColumns(cols);
           return res.data.values;
         });
     };
@@ -54,10 +52,9 @@ const User = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.data.values){
-          setPromptId(res.data.values[0][0]);
           const cols:Column[] = [...columns];
-          for(let i = 1; i < res.data.values[0].length; i++){
-            cols[i-1].text = res.data.values[0][i];
+          for(let i = 0; i < res.data.values[0].length; i++){
+            cols[i].text = res.data.values[0][i];
           }
           setColumns(cols);
         }
@@ -67,11 +64,22 @@ const User = () => {
     return response;
   };
 
+  const getColumnWithName=(name: string)=>{
+    if (columns.filter((col: Column)=>col.title ===name)[0]){
+      return columns.filter((col: Column)=>col.title ===name)[0].text;
+    }
+    return "";
+  }
+
+  const getColumns = ()=>{
+    return columns.filter((col: Column)=>col.title !=="Prompt ID" && col.title !=="Industry");
+  }
+
   return (
     <>
       <div className="flex flex-row items-center">
-        <div className="ml-4">Prompt ID: {promptId}</div>
-        <label className="ml-4">Row</label>
+        <div className="ml-4 font-semibold">Prompt ID: {getColumnWithName("Prompt ID")}</div>
+        <label className="ml-4 mr-4 font-semibold">Row</label>
         <SlArrowLeft onClick={() => handleNav(-1)} />
         <input
           type="text"
@@ -80,9 +88,21 @@ const User = () => {
           onChange={(e) => handleNav(0, Number(e.target.value))}
         />
         <SlArrowRight onClick={() => handleNav(1)} />
+        <div className="ml-4 font-semibold flex flex-row text-orange-500">
+          <div className="ml-4">
+            <div>Use Case</div>
+          </div>
+          <div className="ml-4 flex flex-col">
+            <div>Industry</div>
+            <div className="text-black">{getColumnWithName("Industry")}</div>
+          </div>
+          <div className="ml-4">Model Output</div>
+          <div className="ml-4">Expected Output</div>
+        </div>
+
       </div>
       <div className="grid grid-cols-3 gap-4 mt-8">
-        {columns.map((c: Column, idx) => (
+        {getColumns().map((c: Column, idx) => (
           <div key={idx} className="ml-4">
             <Question column={c} />
           </div>
