@@ -2,12 +2,12 @@
 
 import { ChangeEvent, useEffect, useState } from "react";
 import { Column } from "../common/constants";
-interface Props {
+interface QuestionProps {
   column: Column;
   rowNumber: number;
 }
 
-const Question = ({ column , rowNumber}: Props) => {
+const Question = ({ column , rowNumber}: QuestionProps) => {
   const [value, setValue] = useState(column.text);
   useEffect(()=>{
     setValue(column.text);

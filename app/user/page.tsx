@@ -5,10 +5,10 @@ import { Column } from "../common/constants";
 import Question from "../components/Question";
 import { SlArrowLeft } from "react-icons/sl";
 import { SlArrowRight } from "react-icons/sl";
-interface Props {
+interface UserProps {
   rowNumber: number;
 }
-const User = ({rowNumber}: Props) => {
+const User = ({rowNumber}: UserProps) => {
   const [columns, setColumns] = useState([] as Column[]);
   const [rowNum, setRowNum] = useState(2);
   useEffect(() => {
