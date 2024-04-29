@@ -8,110 +8,133 @@ import { SlArrowRight } from "react-icons/sl";
 interface UserProps {
   rowNumber: number;
 }
-const User = ({rowNumber}: UserProps) => {
+const User = ({ rowNumber }: UserProps) => {
   const [columns, setColumns] = useState([] as Column[]);
   const [rowNum, setRowNum] = useState(2);
   useEffect(() => {
     const fetchData = async () => {
-      const req = new Request(`/api/googlesheet?range=Sheet1!A1:Z2`);
-      await fetch(req, {
+      const req1 = new Request(`/api/googlesheet?range=Sheet1!A1:Z2`);
+      const req2 = new Request(`/api/comment?range=Sheet1!A2:Z2`);
+      const params = {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          const cols = res.data.values[0].map((title: string) => ({ title }));
-          for (let i = 0; i < res.data.values[1].length; i++) {
-            cols[i].text = res.data.values[1][i];
-            cols[i].columnNum = String.fromCharCode('A'.charCodeAt(0) + i);
+      };
+      await Promise.all([
+        fetch(req1, params).then((res) => res.json()),
+        fetch(req2, params).then((res) => res.json()),
+      ]).then(([res1, res2]) => {
+        const cols = res1.data.values[0].map((title: string) => ({ title }));
+        for (let i = 0; i < res1.data.values[1].length; i++) {
+          cols[i].text = res1.data.values[1][i];
+          cols[i].columnNum = String.fromCharCode("A".charCodeAt(0) + i);
+          if (res2.data.values[0][i] && res2.data.values[0][i].length > 2) {
+            cols[i].comments = JSON.parse(res2.data.values[0][i]);
           }
-          setColumns(cols);
-          return res.data.values;
-        });
+        }
+        setColumns(cols);
+        return [res1, res2];
+      });
     };
     fetchData();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      const req = new Request(`/api/googlesheet?range=Sheet1!A${rowNumber}:Z${rowNumber}`);
-      await fetch(req, {
+      const req1 = new Request(`/api/googlesheet?range=Sheet1!A${rowNumber}:Z${rowNumber}`);
+      const req2 = new Request(`/api/comment?range=Sheet1!A${rowNumber}:Z${rowNumber}`);
+      const params = {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.data.values && columns.length > 0){
-            const cols:Column[] = [...columns];
-            for(let i = 0; i < res.data.values[0].length; i++){
-              cols[i].text = res.data.values[0][i];
+      };
+      await Promise.all([
+        fetch(req1, params).then((res) => res.json()),
+        fetch(req2, params).then((res) => res.json()),
+      ]).then(([res1, res2]) => {
+        if (res1.data.values && columns.length > 0){
+          const cols: Column[] = [...columns];
+          for (let i = 0; i < res1.data.values[0].length; i++) {
+            cols[i].text = res1.data.values[0][i];
+            cols[i].comments =[];
+            if (res2.data.values&&res2.data.values[0][i] && res2.data.values[0][i].length > 2) {
+              cols[i].comments = JSON.parse(res2.data.values[0][i]);
             }
-            setColumns(cols);
-            setRowNum(rowNumber);
           }
-          return res.data.values;
-        });
+          setColumns(cols);
+        }
+  
+        return [res1, res2];
+      });
     };
     fetchData();
   }, [rowNumber]);
 
   const handleNav = async (nextPage: number, jumpTo?: number) => {
     let row = rowNum + nextPage;
-    if (jumpTo){
+    if (jumpTo) {
       row = jumpTo;
     }
-    if (row < 2 ) {
+    if (row < 2) {
       return;
     }
     setRowNum(row);
-    const range = `A${row}:Z${row}`;
-    const req = new Request(`/api/googlesheet?range=${range}`);
-    const response = await fetch(req, {
+    const req1 = new Request(`/api/googlesheet?range=Sheet1!A${row}:Z${row}`);
+    const req2 = new Request(`/api/comment?range=Sheet1!A${row}:Z${row}`);
+    const params = {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.data.values){
-          const cols:Column[] = [...columns];
-          for(let i = 0; i < res.data.values[0].length; i++){
-            cols[i].text = res.data.values[0][i];
+    };
+    const response = await Promise.all([
+      fetch(req1, params).then((res) => res.json()),
+      fetch(req2, params).then((res) => res.json()),
+    ]).then(([res1, res2]) => {
+      if (res1.data.values){
+        const cols: Column[] = [...columns];
+        for (let i = 0; i < res1.data.values[0].length; i++) {
+          cols[i].text = res1.data.values[0][i];
+          cols[i].comments =[];
+          if (res2.data.values&&res2.data.values[0][i] && res2.data.values[0][i].length > 2) {
+            cols[i].comments = JSON.parse(res2.data.values[0][i]);
           }
-          setColumns(cols);
         }
+        setColumns(cols);
+      }
 
-        return res.data.values;
-      });
+      return [res1, res2];
+    });
     return response;
   };
 
-  const getColumnWithName=(name: string)=>{
-    if (columns.filter((col: Column)=>col.title ===name)[0]){
-      return columns.filter((col: Column)=>col.title ===name)[0].text;
+  const getColumnWithName = (name: string) => {
+    if (columns.filter((col: Column) => col.title === name)[0]) {
+      return columns.filter((col: Column) => col.title === name)[0].text;
     }
     return "";
-  }
+  };
 
-  const getColumns = ()=>{
-    const hideColumns = ["Prompt ID", "Industry", "Use Case", "Writer"]
-    return columns.filter((col: Column)=>!hideColumns.includes(col.title ||"") );
-  }
+  const getColumns = () => {
+    const hideColumns = ["Prompt ID", "Industry", "Use Case", "Writer"];
+    return columns.filter(
+      (col: Column) => !hideColumns.includes(col.title || "")
+    );
+  };
 
   return (
     <div>
       {/* USER Part of the application*/}
       <div>
         <div className="flex flex-row items-center ml-4 mt-4">
-          <div className="ml-4 font-semibold">Prompt ID: {getColumnWithName("Prompt ID")}</div>
+          <div className="ml-4 font-semibold">
+            Prompt ID: {getColumnWithName("Prompt ID")}
+          </div>
           <label className="ml-4 mr-4 font-semibold">Row</label>
           <SlArrowLeft onClick={() => handleNav(-1)} />
           <input
@@ -133,12 +156,11 @@ const User = ({rowNumber}: UserProps) => {
             <div className="ml-4">Model Output</div>
             <div className="ml-4">Expected Output</div>
           </div>
-
         </div>
         <div className="grid grid-cols-3 gap-4 mt-8">
           {getColumns().map((c: Column, idx) => (
             <div key={idx} className="ml-4">
-              <Question column={c} rowNumber={rowNum}/>
+              <Question column={c} rowNumber={rowNum} />
             </div>
           ))}
         </div>

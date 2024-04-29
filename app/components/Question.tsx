@@ -15,13 +15,12 @@ const Question = ({ column, rowNumber }: QuestionProps) => {
   }, [column.text]);
 
   const handleTextChange = async (e: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(column.columnNum! + rowNumber);
     setValue(e.target.value);
     if (!column.columnNum) {
       return;
     }
     const req = new Request(
-      `/api/googlesheet?range=${column.columnNum! + rowNumber}`
+      `/api/googlesheet?range=${column.columnNum}${rowNumber}`
     );
     const response = await fetch(req, {
       method: "PUT",
@@ -52,8 +51,8 @@ const Question = ({ column, rowNumber }: QuestionProps) => {
           id={column.id}
         />
 
-        <div className="ml-4 cursor-pointer">
-          <CommentModal/>
+        <div className="ml-4">
+          <CommentModal column={column} rowNumber={rowNumber}/>
         </div>
       </div>
     </div>
