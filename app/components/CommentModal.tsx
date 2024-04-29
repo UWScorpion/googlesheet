@@ -9,13 +9,14 @@ interface CommentModalProps {
 
 const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
   const [showModal, setShowModal] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState({} as Comment);
 
   const handleSave = async () => {
     if (!column.columnNum) {
       return;
     }
-    if (!column.comments){
+    if (!column.comments) {
       column.comments = [];
     }
     column.comments.push(comment);
@@ -33,15 +34,17 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
     });
     setComment({});
     return response;
-
   };
+
   return (
     <div>
       <button type="button" onClick={() => setShowModal(true)}>
         <BiCommentAdd />
       </button>
       <div>
-        {column.comments && column.comments.length ? <div>{column.comments.length} comments</div>:null}
+        {column.comments && column.comments.length ? (
+          <div onClick={() => setShowComments(true)}>{column.comments.length} comments</div>
+        ) : null}
       </div>
       {showModal ? (
         <>
@@ -91,6 +94,39 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
                     onClick={() => handleSave()}
                   >
                     Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
+      {showComments ? (
+        <>
+          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
+                  <h3 className="text-3xl font=semibold">Comments</h3>
+                  <button
+                    className="bg-transparent border-0 text-black float-right"
+                    onClick={() => setShowComments(false)}
+                  >
+                    <span>
+                      <IoMdClose />
+                    </span>
+                  </button>
+                </div>
+                <div className="relative p-6 flex-auto">
+                    {column.comments && column.comments.length ? (<>{column.comments.map(comment =>(<div>{comment.comment}</div>))}</>): "no comment"}
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    className="text-gray-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    onClick={() => setShowComments(false)}
+                  >
+                    Cancel
                   </button>
                 </div>
               </div>
