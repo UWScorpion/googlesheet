@@ -43,7 +43,9 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
       </button>
       <div>
         {column.comments && column.comments.length ? (
-          <div onClick={() => setShowComments(true)}>{column.comments.length} comments</div>
+          <div onClick={() => setShowComments(true)}>
+            {column.comments.length} comments
+          </div>
         ) : null}
       </div>
       {showModal ? (
@@ -118,7 +120,15 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
-                    {column.comments && column.comments.length ? (<>{column.comments.map(comment =>(<div>{comment.comment}</div>))}</>): "no comment"}
+                  {column.comments && column.comments.length ? (
+                    <>
+                      {column.comments.map((comment) => (
+                        <div>{comment.comment}</div>
+                      ))}
+                    </>
+                  ) : (
+                    "no comment"
+                  )}
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
