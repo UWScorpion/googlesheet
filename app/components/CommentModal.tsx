@@ -123,7 +123,7 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
                   {column.comments && column.comments.length ? (
                     <>
                       {column.comments.map((comment) => (
-                        <div>{comment.comment}</div>
+                        <div key={comment.id}>{comment.comment}</div>
                       ))}
                     </>
                   ) : (

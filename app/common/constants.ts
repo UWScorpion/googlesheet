@@ -22,6 +22,7 @@ export interface ManagerColumn {
 }
 
 export interface Comment {
+    id?:string,
     commentType?: CommentType,
     comment?: string,
 }
