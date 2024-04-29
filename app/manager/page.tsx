@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { ManagerColumn } from "../common/constants";
 import User from "../user/page";
+import loading from "../../public/loading.gif";
 
 const Manager = () => {
   const [columns, setColumns] = useState([] as ManagerColumn[]);
@@ -52,30 +53,39 @@ const Manager = () => {
   };
   return (
     <div>
-      <div className="font-bold ml-4 text-xl">MANAGER VIEW</div>
-      <table className="border-separate border-spacing-4 border mt-4 ml-4">
-        <tbody>
-          {getColumns().map((row: ManagerColumn, i) => (
-            <tr key={i} className={`${i === 0 ? "cursor-pointer" : ""}`}>
-              {row.texts?.map((col: string, j) => (
-                <td
-                  key={j}
-                  className={`text-center ${j === 0 ? "font-semibold cursor-auto" : ""} ${
-                    j !== 0 && i === 0 ? "hover:bg-gray-200" : ""
-                  }`}
-                  onClick={() => handleClick(i, j)}
-                >
-                  {col}
-                </td>
+      {columns.length > 0 ? (
+        <div>
+          <div className="font-bold ml-4 text-xl">MANAGER VIEW</div>
+          <table className="border-separate border-spacing-4 border mt-4 ml-4">
+            <tbody>
+              {getColumns().map((row: ManagerColumn, i) => (
+                <tr key={i} className={`${i === 0 ? "cursor-pointer" : ""}`}>
+                  {row.texts?.map((col: string, j) => (
+                    <td
+                      key={j}
+                      className={`text-center ${
+                        j === 0 ? "font-semibold cursor-auto" : ""
+                      } ${j !== 0 && i === 0 ? "hover:bg-gray-200" : ""}`}
+                      onClick={() => handleClick(i, j)}
+                    >
+                      {col}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="mt-20 font-bold ml-4 text-xl">USER VIEW</div>
-      <div className="border">
-        <User rowNumber={rowNum} />
-      </div>
+            </tbody>
+          </table>
+          <div className="mt-20 font-bold ml-4 text-xl">USER VIEW</div>
+          <div className="border">
+            <User rowNumber={rowNum} />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <img className="w-32" src={loading.src} alt="loading" />
+          <div className="text-3xl">Loading</div>
+        </div>
+      )}
     </div>
   );
 };

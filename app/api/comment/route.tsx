@@ -21,7 +21,7 @@ const sheets = google.sheets({
 export async function GET(request: NextRequest) {
   const range = request.nextUrl.searchParams.get("range")!;
   const response = await sheets.spreadsheets.values.get({
-    spreadsheetId: process.env.COMMENT_GOOGLE_ID,
+    spreadsheetId: process.env.COMMENT_GOOGLE_SHEET_ID,
     range: range,
   });
   return NextResponse.json({ data: response.data });
@@ -32,7 +32,7 @@ export async function PUT(request: NextRequest) {
     const range = request.nextUrl.searchParams.get("range")!;
     const body = await request.json();
     const response = await sheets.spreadsheets.values.update({
-      spreadsheetId: process.env.COMMENT_GOOGLE_ID,
+      spreadsheetId: process.env.COMMENT_GOOGLE_SHEET_ID,
       range: range,
       valueInputOption: "USER_ENTERED",
       requestBody: {

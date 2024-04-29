@@ -43,7 +43,7 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
       </button>
       <div>
         {column.comments && column.comments.length ? (
-          <div onClick={() => setShowComments(true)}>
+          <div className="cursor-pointer" onClick={() => setShowComments(true)}>
             {column.comments.length} comments
           </div>
         ) : null}
