@@ -16,7 +16,7 @@ export interface Column {
     comments?: Comment[],
 }
 
-export interface ManagerColumn {
+export interface ProjectCoordinatorColumn {
     title?: string,
     texts?: string[],
 }
