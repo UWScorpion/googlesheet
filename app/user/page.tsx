@@ -65,6 +65,7 @@ const User = ({ rowNumber }: UserProps) => {
               cols[i].comments = JSON.parse(res2.data.values[0][i]);
             }
           }
+          setRowNum(rowNumber);
           setColumns(cols);
         }
   
