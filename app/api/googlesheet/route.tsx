@@ -22,21 +22,22 @@ export async function GET(request: NextRequest) {
   const range = request.nextUrl.searchParams.get("range")!;
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: range,
+    range,
   });
   return NextResponse.json({ data: response.data });
 }
 
 export async function POST(request: NextRequest) {
+  const range = request.nextUrl.searchParams.get("range")!;
   try {
     const body = await request.json();
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "A1:C1",
+      range,
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [
-          [body.seedPrompt, body.seedPromptInstructions, body.seedPromptAnalysis],
+          [body],
         ],
       },
     });

@@ -27,12 +27,21 @@ export interface Comment {
     comment?: string,
 }
 
-enum CommentType {
-    QC,
-    EDITOR,
+export enum CommentType {
+    QC = "Quality Control",
+    EDITOR="Editor",
 }
 
 enum QuestionType {
     SELECTOR,
     TEXTAREA,
 }
+
+export interface ProjectCoordinator {
+    id?: string,
+    range?: string,
+    name?: string, 
+    email?: string,
+}
+
+export const projectCoordinators = ["abc@gmail.com", "def@google.com", "ghi@google.com"];

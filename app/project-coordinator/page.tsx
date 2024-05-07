@@ -58,7 +58,7 @@ const ProjectCoordinator = () => {
           <div className="font-bold ml-4 text-xl">PROJECT COORDINATOR VIEW</div>
           <table className="border-separate border-spacing-4 border mt-4 ml-4">
             <tbody>
-              {getColumns().map((row: ManagerColumn, i) => (
+              {getColumns().map((row: ProjectCoordinatorColumn, i) => (
                 <tr key={i} className={`${i === 0 ? "cursor-pointer" : ""}`}>
                   {row.texts?.map((col: string, j) => (
                     <td

@@ -43,8 +43,8 @@ const User = ({ rowNumber }: UserProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const req1 = new Request(`/api/googlesheet?range=Sheet1!A${rowNumber}:Z${rowNumber}`);
-      const req2 = new Request(`/api/comment?range=Sheet1!A${rowNumber}:Z${rowNumber}`);
+      const req1 = new Request(`/api/googlesheet?range=Sheet1!A${rowNumber || "2"}:Z${rowNumber || "2"}`);
+      const req2 = new Request(`/api/comment?range=Sheet1!A${rowNumber || "2"}:Z${rowNumber || "2"}`);
       const params = {
         method: "GET",
         headers: {

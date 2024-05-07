@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { BiCommentAdd } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
-import { Column, Comment } from "../common/constants";
+import { Column, Comment, CommentType } from "../common/constants";
+import Dropdown from "./Dropdown";
 interface CommentModalProps {
   column: Column;
   rowNumber: number;
@@ -66,10 +67,7 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
                 </div>
                 <div className="relative p-6 flex-auto">
                   <form>
-                    <label className="block text-black text-sm font-bold mb-1">
-                      Comment Type
-                    </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-1 text-black" />
+                    <Dropdown title={"Select A Comment Type"} options={Object.values(CommentType)} />
                     <label className="block text-black text-sm font-bold mb-1">
                       Comment
                     </label>
