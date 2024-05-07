@@ -41,8 +41,8 @@ const Manager = () => {
       </div>
       <div className="grid grid-cols-4">
         <div>Prompt Range: </div>
-        {projectCoordinators.map(() => (
-          <div>
+        {projectCoordinators.map((_, idx) => (
+          <div key={idx}>
             <span>Start</span>
             <input
               className="w-10 ml-4 mr-4 appearance-none border-2 border-gray-200 rounded py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
@@ -57,12 +57,12 @@ const Manager = () => {
         ))}
       </div>
       <div className="grid grid-cols-4 mt-4">
-        <div>Project Coordinator: </div>   {projectCoordinators.map(() => (<Dropdown title={"Select A Project Coordinator"} options={projectCoordinators} />))}
+        <div>Project Coordinator: </div>   {projectCoordinators.map((_, idx) => (<Dropdown key ={idx} title={"Select A Project Coordinator"} options={projectCoordinators} />))}
       </div>
       <div className="grid grid-cols-4 mt-4">
         <div>Project Status: </div>
-        {projectCoordinators.map(() => (
-          <IconContext.Provider value={{ color: "black", size: "50px" }}>
+        {projectCoordinators.map((_, idx) => (
+          <IconContext.Provider key ={idx} value={{ color: "black", size: "50px" }}>
             <BiBarChartSquare />
           </IconContext.Provider>
         ))}

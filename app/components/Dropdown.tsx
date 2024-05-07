@@ -13,7 +13,7 @@ const Dropdown = ({title, options}: DropDownProps) => {
           className="w-30 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option selected>{title}</option>
-          {options.map((co, idx)=>(<option value={idx}>{co}</option>))}
+          {options.map((co, idx)=>(<option key = {idx} value={idx}>{co}</option>))}
         </select>
       </form>
     </div>
