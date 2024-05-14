@@ -43,8 +43,14 @@ const User = ({ rowNumber }: UserProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const req1 = new Request(`/api/googlesheet?range=Sheet1!A${rowNumber || "2"}:Z${rowNumber || "2"}`);
-      const req2 = new Request(`/api/comment?range=Sheet1!A${rowNumber || "2"}:Z${rowNumber || "2"}`);
+      const req1 = new Request(
+        `/api/googlesheet?range=Sheet1!A${rowNumber || "2"}:Z${
+          rowNumber || "2"
+        }`
+      );
+      const req2 = new Request(
+        `/api/comment?range=Sheet1!A${rowNumber || "2"}:Z${rowNumber || "2"}`
+      );
       const params = {
         method: "GET",
         headers: {
@@ -56,19 +62,23 @@ const User = ({ rowNumber }: UserProps) => {
         fetch(req1, params).then((res) => res.json()),
         fetch(req2, params).then((res) => res.json()),
       ]).then(([res1, res2]) => {
-        if (res1.data.values && columns.length > 0){
+        if (res1.data.values && columns.length > 0) {
           const cols: Column[] = [...columns];
           for (let i = 0; i < res1.data.values[0].length; i++) {
             cols[i].text = res1.data.values[0][i];
-            cols[i].comments =[];
-            if (res2.data.values&&res2.data.values[0][i] && res2.data.values[0][i].length > 2) {
+            cols[i].comments = [];
+            if (
+              res2.data.values &&
+              res2.data.values[0][i] &&
+              res2.data.values[0][i].length > 2
+            ) {
               cols[i].comments = JSON.parse(res2.data.values[0][i]);
             }
           }
           setRowNum(rowNumber);
           setColumns(cols);
         }
-  
+
         return [res1, res2];
       });
     };
@@ -97,12 +107,16 @@ const User = ({ rowNumber }: UserProps) => {
       fetch(req1, params).then((res) => res.json()),
       fetch(req2, params).then((res) => res.json()),
     ]).then(([res1, res2]) => {
-      if (res1.data.values){
+      if (res1.data.values) {
         const cols: Column[] = [...columns];
         for (let i = 0; i < res1.data.values[0].length; i++) {
           cols[i].text = res1.data.values[0][i];
-          cols[i].comments =[];
-          if (res2.data.values&&res2.data.values[0][i] && res2.data.values[0][i].length > 2) {
+          cols[i].comments = [];
+          if (
+            res2.data.values &&
+            res2.data.values[0][i] &&
+            res2.data.values[0][i].length > 2
+          ) {
             cols[i].comments = JSON.parse(res2.data.values[0][i]);
           }
         }
@@ -165,6 +179,9 @@ const User = ({ rowNumber }: UserProps) => {
             </div>
           ))}
         </div>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4">
+          Submit
+        </button>
       </div>
     </div>
   );
