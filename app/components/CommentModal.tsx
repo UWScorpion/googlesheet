@@ -66,7 +66,6 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
-                  <form>
                     <Dropdown title={"Select A Comment Type"} options={Object.values(CommentType)} />
                     <label className="block text-black text-sm font-bold mb-1">
                       Comment
@@ -78,7 +77,6 @@ const CommentModal = ({ column, rowNumber }: CommentModalProps) => {
                       }
                       className="shadow appearance-none border rounded w-full py-2 px-1 text-black"
                     />
-                  </form>
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
