@@ -51,6 +51,7 @@ const Question = ({ column, rowNumber }: QuestionProps) => {
             className="appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             name={column.title}
             id={column.id}
+            disabled={column.disabled}
           />
           <div className="flex flex-row"><span className="text-gray-500 mr-4">Rating:</span> <Dropdown title={"Select A Writer"} options={scoreList} /></div>
         </div>

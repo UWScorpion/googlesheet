@@ -12,6 +12,7 @@ interface UserProps {
 const User = ({ rowNumber }: UserProps) => {
   const [columns, setColumns] = useState([] as Column[]);
   const [rowNum, setRowNum] = useState(2);
+  const [submitted, setSubmitted] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const req1 = new Request(`/api/googlesheet?range=Sheet1!A1:Z2`);
@@ -27,7 +28,9 @@ const User = ({ rowNumber }: UserProps) => {
         fetch(req1, params).then((res) => res.json()),
         fetch(req2, params).then((res) => res.json()),
       ]).then(([res1, res2]) => {
-        const cols = res1.data.values[0].map((title: string) => ({ title }));
+        const cols = res1.data.values[0].map((title: string) => { 
+          return { title, disabled:  title === "Seed Prompt"}; 
+        });
         for (let i = 0; i < res1.data.values[1].length; i++) {
           cols[i].text = res1.data.values[1][i];
           cols[i].columnNum = String.fromCharCode("A".charCodeAt(0) + i);
@@ -45,8 +48,7 @@ const User = ({ rowNumber }: UserProps) => {
   useEffect(() => {
     const fetchData = async () => {
       const req1 = new Request(
-        `/api/googlesheet?range=Sheet1!A${rowNumber || "2"}:Z${
-          rowNumber || "2"
+        `/api/googlesheet?range=Sheet1!A${rowNumber || "2"}:Z${rowNumber || "2"
         }`
       );
       const req2 = new Request(
@@ -143,6 +145,11 @@ const User = ({ rowNumber }: UserProps) => {
     );
   };
 
+  const handleSubmit =()=>{
+    columns.forEach(col=>col.disabled = true);
+    setSubmitted(true);
+  }
+
   return (
     <div>
       {/* USER Part of the application*/}
@@ -181,7 +188,7 @@ const User = ({ rowNumber }: UserProps) => {
             </div>
           ))}
         </div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4">
+        <button className={submitted ? "bg-gray-300 px-4 py-2 rounded-md cursor-not-allowed opacity-50 mt-4 ml-4": "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"} onClick={handleSubmit} disabled={submitted}>
           Submit
         </button>
       </div>

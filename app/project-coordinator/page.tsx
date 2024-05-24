@@ -95,7 +95,7 @@ const ProjectCoordinator = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="h-screen flex items-center justify-center">
           <img className="w-32" src={loading.src} alt="loading" />
           <div className="text-3xl">Loading</div>
         </div>
