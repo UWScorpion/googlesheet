@@ -53,7 +53,7 @@ const ProjectCoordinator = () => {
     }
   };
 
-  const handleSave = async () => {};
+  const handleSave = async () => { };
 
   const getColumns = () => {
     const hideColumns = ["Use Case"];
@@ -73,13 +73,11 @@ const ProjectCoordinator = () => {
                   {row.texts?.map((col: string, j) => (
                     <td
                       key={j}
-                      className={`text-center ${
-                        j === 0 ? "font-semibold cursor-auto" : ""
-                      } ${
-                        j !== 0 && (i === 0 || i === 1)
+                      className={`text-center ${j === 0 ? "font-semibold cursor-auto" : ""
+                        } ${j !== 0 && (i === 0 || i === 1)
                           ? "hover:bg-gray-200"
                           : ""
-                      }`}
+                        }`}
                       onClick={() => handleClick(i, j)}
                     >
                       {col}
@@ -89,7 +87,9 @@ const ProjectCoordinator = () => {
               ))}
             </tbody>
           </table>
-          <div className="mt-20 font-bold ml-4 text-xl">USER VIEW</div>
+          <div className="flex flex-row">
+            <div className="mt-20 font-bold ml-4 text-xl">USER VIEW</div>
+          </div>
           <div className="border">
             <User rowNumber={rowNum} />
           </div>

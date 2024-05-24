@@ -5,6 +5,7 @@ import { Column } from "../common/constants";
 import Question from "../components/Question";
 import { SlArrowLeft } from "react-icons/sl";
 import { SlArrowRight } from "react-icons/sl";
+import Timer from "../components/Timer";
 interface UserProps {
   rowNumber: number;
 }
@@ -171,6 +172,7 @@ const User = ({ rowNumber }: UserProps) => {
             <div className="ml-4">Model Output</div>
             <div className="ml-4">Expected Output</div>
           </div>
+          <Timer rowNumber={rowNum} />
         </div>
         <div className="grid grid-cols-3 gap-4 mt-8">
           {getColumns().map((c: Column, idx) => (

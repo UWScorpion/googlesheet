@@ -45,3 +45,5 @@ export interface ProjectCoordinator {
 }
 
 export const projectCoordinators = ["abc@gmail.com", "def@google.com", "ghi@google.com"];
+
+export const scoreList = [0, 1, 2, 3, 4, 5];

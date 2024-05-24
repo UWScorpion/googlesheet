@@ -1,8 +1,9 @@
 "use client";
 
 import { ChangeEvent, useEffect, useState } from "react";
-import { Column } from "../common/constants";
+import { Column, scoreList } from "../common/constants";
 import CommentModal from "./CommentModal";
+import Dropdown from "./Dropdown";
 interface QuestionProps {
   column: Column;
   rowNumber: number;
@@ -43,16 +44,18 @@ const Question = ({ column, rowNumber }: QuestionProps) => {
         {column.title}
       </label>
       <div className="flex flex-row">
-        <textarea
-          value={value}
-          onChange={(e) => handleTextChange(e)}
-          className="appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-          name={column.title}
-          id={column.id}
-        />
-
+        <div>
+          <textarea
+            value={value}
+            onChange={(e) => handleTextChange(e)}
+            className="appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+            name={column.title}
+            id={column.id}
+          />
+          <div className="flex flex-row"><span className="text-gray-500 mr-4">Rating:</span> <Dropdown title={"Select A Writer"} options={scoreList} /></div>
+        </div>
         <div className="ml-4">
-          <CommentModal column={column} rowNumber={rowNumber}/>
+          <CommentModal column={column} rowNumber={rowNumber} />
         </div>
       </div>
     </div>
