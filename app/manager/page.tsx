@@ -5,10 +5,17 @@ import { BiBarChartSquare } from "react-icons/bi";
 import { IconContext } from "react-icons";
 import Dropdown from "../components/Dropdown";
 import { IoMdClose } from "react-icons/io";
+import BarChart from "../components/BarChart";
 
 const Manager = () => {
   const [maxRow, setMaxRow] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState([] as number[]);
+  const dataSet = [
+    [0, 0, 0, 81, 1, 2, 4],
+    [0, 0, 20, 1, 1, 2, 4],
+    [1, 10, 20, 1, 10, 2, 4],
+  ];
   useEffect(() => {
     const fetchData = async () => {
       const req = new Request(`/api/googlesheet?range=A1:Z1`);
@@ -32,6 +39,11 @@ const Manager = () => {
     };
     fetchData();
   }, []);
+
+  const handleChartIconClick = (idx: number) => {
+    setShowModal(true);
+    setData(dataSet[idx]);
+  };
 
   return (
     <div>
@@ -75,14 +87,14 @@ const Manager = () => {
             key={idx}
             value={{ color: "black", size: "50px" }}
           >
-            <BiBarChartSquare onClick={() => setShowModal(true)} />
+            <BiBarChartSquare onClick={() => handleChartIconClick(idx)} />
           </IconContext.Provider>
         ))}
       </div>
       {showModal ? (
         <>
-          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+          <div className="flex justify-center items-center relative p-4 w-full max-w-2xl max-h-full">
+            <div className="relative p-4 w-full max-w-2xl max-h-full">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
                   <h3 className="text-3xl font=semibold">Prompt Status</h3>
@@ -95,7 +107,9 @@ const Manager = () => {
                     </span>
                   </button>
                 </div>
-                <div className="relative p-6 flex-auto"></div>
+                <div className="relative p-6 flex-auto">
+                  <BarChart rawData={data} />
+                </div>
               </div>
             </div>
           </div>
