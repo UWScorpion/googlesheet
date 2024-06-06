@@ -61,5 +61,11 @@ export default function Home() {
     };
     setData(entry);
   };
-  return <>Welcome to Core Machine Learning Group at Global Logic</>;
+  return (
+    <div className="flex justify-center">
+      <div className="text-4xl">
+        Welcome to Core Machine Learning Group at Global Logic
+      </div>
+    </div>
+  );
 }
